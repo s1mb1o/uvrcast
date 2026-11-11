@@ -1,0 +1,21 @@
+{
+  "upstream_repository": "https://github.com/piratfm/crusher264",
+  "upstream_commit": "19dd075e658dc1f78934e8f703d8fb14f6746e35",
+  "upstream_author": "tipok / piratfm",
+  "upstream_license": "GPLv2",
+  "modified_upstream_files": [
+    "sample/crusherenc.c",
+    "src/crusher-fx2.c",
+    "src/crusher-i2c.c",
+    "src/crusher-i2c.h",
+    "src/crusher.c",
+    "src/mg1264-cmd.c",
+    "src/mg1264-io.c",
+    "src/mg1264-io.h",
+    "src/mg1264-loader.c"
+  ],
+  "vendored_libusb_compat_commit": "4831748a1439aec81e9cbb9984b1b0289c1c7051",
+  "vendored_libusb_header_tag": "v1.0.25",
+  "publication_model": "Independent repository based on an imported upstream source snapshot",
+  "upstream_git_history_included": false
+}

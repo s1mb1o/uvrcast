@@ -1,0 +1,17 @@
+{
+  "host": "0.0.0.0",
+  "port": 18890,
+  "input": "composite",
+  "standard": "pal",
+  "width": 720,
+  "height": 576,
+  "bitrate": 2000000,
+  "audio_bitrate": 128000,
+  "reload_fx2": false,
+  "auto_reload_after": 2,
+  "stall_timeout": 20,
+  "queue_packets": 1024,
+  "viewer_max_delay": 0.5,
+  "max_clients": 12,
+  "rtsp_publish_url": "rtsp://127.0.0.1:18554/usb"
+}

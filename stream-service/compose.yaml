@@ -1,0 +1,86 @@
+name: uvrcast
+
+x-runtime: &runtime
+  image: uvrcast:local
+  platform: linux/amd64
+  pull_policy: never
+  user: "${RECORDER_UID:-1000}:${RECORDER_GID:-1000}"
+  network_mode: host
+  init: true
+  restart: unless-stopped
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  tmpfs:
+    - /tmp:size=64m,mode=1777
+  stop_grace_period: 15s
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: "3"
+
+services:
+  capture:
+    <<: *runtime
+    build:
+      context: ..
+      dockerfile: stream-service/Dockerfile
+    environment:
+      BLACKMAGIC_WEBRTC_URL: "http://${RACK_IP:?Set RACK_IP in .env to the rack LAN IPv4 address}:18889/usb"
+    volumes:
+      # Bind the directory so new USB nodes remain visible after FX2 re-enumeration.
+      - type: bind
+        source: /dev/bus/usb
+        target: /dev/bus/usb
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./docker/stream.json
+        target: /etc/blackmagic-recorder/stream.json
+        read_only: true
+    device_cgroup_rules:
+      - "c 189:* rw"
+    healthcheck:
+      test: [CMD, python3, /opt/blackmagic-recorder/stream-service/docker/healthcheck.py, capture]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 90s
+
+  gateway:
+    <<: *runtime
+    command: [/usr/local/bin/mediamtx, /etc/blackmagic-recorder/mediamtx.yml]
+    environment:
+      MTX_WEBRTCADDITIONALHOSTS: "${RACK_IP:?Set RACK_IP in .env to the rack LAN IPv4 address}"
+    volumes:
+      - type: bind
+        source: ./docker/mediamtx.yml
+        target: /etc/blackmagic-recorder/mediamtx.yml
+        read_only: true
+    healthcheck:
+      test: [CMD, python3, /opt/blackmagic-recorder/stream-service/docker/healthcheck.py, gateway]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+
+  publisher:
+    <<: *runtime
+    command: [python3, /opt/blackmagic-recorder/stream-service/publish.py, --config, /etc/blackmagic-recorder/stream.json]
+    volumes:
+      - type: bind
+        source: ./docker/stream.json
+        target: /etc/blackmagic-recorder/stream.json
+        read_only: true
+    depends_on:
+      capture:
+        condition: service_started
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python3, /opt/blackmagic-recorder/stream-service/docker/healthcheck.py, publisher]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 90s

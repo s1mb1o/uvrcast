@@ -1,0 +1,60 @@
+[
+  {
+    "check": "build",
+    "exit_status": 0
+  },
+  {
+    "check": "offline-without-firmware",
+    "exit_status": 0
+  },
+  {
+    "check": "cli-help",
+    "exit_status": 0
+  },
+  {
+    "check": "shell-syntax",
+    "exit_status": 0
+  },
+  {
+    "check": "local-firmware-import",
+    "exit_status": 0
+  },
+  {
+    "check": "capture-conversion",
+    "exit_status": 0
+  },
+  {
+    "check": "optional-real-image-loader",
+    "exit_status": 0
+  },
+  {
+    "check": "publication-build",
+    "checked_at": "2026-11-11T17:05:24.300348+00:00",
+    "exit_status": 0
+  },
+  {
+    "check": "publication-usb-mock-regressions",
+    "checked_at": "2026-11-11T17:05:24.300348+00:00",
+    "passed": 5,
+    "optional_vendor_image_loader": "skipped"
+  },
+  {
+    "check": "streaming-with-local-fixture",
+    "checked_at": "2026-11-11T17:05:24.300348+00:00",
+    "tests": 27,
+    "skipped": 0,
+    "exit_status": 0
+  },
+  {
+    "check": "streaming-without-local-fixture",
+    "checked_at": "2026-11-11T17:05:24.300348+00:00",
+    "tests": 27,
+    "skipped": 6,
+    "exit_status": 0
+  },
+  {
+    "check": "shell-syntax",
+    "checked_at": "2026-11-11T17:05:24.300348+00:00",
+    "exit_status": 0
+  }
+]

@@ -1,0 +1,39 @@
+# Pinned MediaMTX 1.21.3. Host networking keeps the publisher on loopback.
+logLevel: info
+logDestinations: [stdout]
+api: true
+apiAddress: 127.0.0.1:19997
+metrics: false
+pprof: false
+playback: false
+moq: false
+rtsp: true
+rtspAddress: 127.0.0.1:18554
+rtspTransports: [tcp]
+rtmp: false
+hls: false
+srt: false
+webrtc: true
+webrtcAddress: :18889
+webrtcLocalUDPAddress: :18189
+webrtcLocalTCPAddress: :18189
+webrtcIPsFromInterfaces: false
+webrtcAdditionalHosts: [] # Set by Compose through MTX_WEBRTCADDITIONALHOSTS.
+webrtcICEServers2: []
+authMethod: internal
+authInternalUsers:
+  - user: any
+    ips: [127.0.0.1, "::1"]
+    permissions:
+      - action: publish
+        path: usb
+      - action: api
+  - user: any
+    ips: []
+    permissions:
+      - action: read
+        path: usb
+paths:
+  usb:
+    source: publisher
+    overridePublisher: false
